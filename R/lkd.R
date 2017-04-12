@@ -1,4 +1,3 @@
-
 #' Distribuicao Katz Lagrangiana (LKD)
 #'
 #' Geração de números aleatórios da LKD pelo método da inversa da função de probabilidade acumulada.
