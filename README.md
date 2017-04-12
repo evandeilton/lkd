@@ -147,9 +147,10 @@ pars <- coef(fit2)
 ci <- confint(fit2, method="quad")
 logL <- as.numeric(logLik(fit2))
 
-va <- seq(min(grid$a), 3, l=20)
-vb <- seq(min(grid$b), 2, l=20)
-vbeta <- seq(-1, max(grid$beta), l=20)
+## Meio lento este produto interno!!!
+va <- seq(min(grid$a), 3, l=100)
+vb <- seq(min(grid$b), 2, l=100)
+vbeta <- seq(-1, max(grid$beta), l=100)
 
 lla <- outer(va, vb, vbeta, FUN = LL, y = y)
 
