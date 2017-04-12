@@ -11,14 +11,25 @@ devtools::install_github('evandeilton/lkd')
 
 ################## Análises por MLE ######################
 
-## PAcotes
+## Pacotes
 require(fitdistrplus)
 require(lkd)
 require(bbmle)
 require(data.table)
 
 ## Dados simulados
-dados <- rLKD(300, 5, 2, -0.1)
+set.seed(2)
+N <- 2000
+x <- 0:(N-1)
+a <- 3; b<- 0.5; beta <- 0.05
+dados <- rLKD(N, a, b, beta)
+
+par(mfrow = c(2,2))
+hist(dados, nclass = 8, prob=T,main="Amostra",cex.axis=1,cex.lab=1,col="darkgreen")
+curve(dLKD(x, a, b, beta), 0, max(y)*2, typ='h', main="Distribuição",cex.axis=1,cex.lab=1,col="darkgreen")
+plot(function(x) pLKD(x, a, b, beta), 0, max(y)*2, main = "Cumulativa")
+xx <- pLKD(0:80, a, b, beta)
+plot(function(x) qLKD(x, a, b, beta), min(xx), max(xx), main = "Inversa Cumulativa")
 
 ## Grid para gerar intervalo de busca. A LKD é sensível ao seu espaço paramétrico.
 grid <- as.data.table(expand.grid(a = seq(0.01, 10, l = 20), b = seq(0.002, 10, l = 20), beta = seq(-0.2, 1, l = 20)))
@@ -46,6 +57,7 @@ while(i <= 10){
 }
 
 ## Visualização do ajuste dos MLE's
+summary(fit)
 plot(fit)
 cdfcomp(fit, addlegend=FALSE)
 denscomp(fit, addlegend=FALSE, xlim = c(0,1))
@@ -102,18 +114,19 @@ ll <- function(y, a, b, beta){
 
 ## Ajuste por bbmle. Note que fnscale = 1, pois a função de verossimilhança já vem negativa.
 fit2 <- mle2(ll,
-            start = as.list(ii), 
-            method = "L-BFGS-B",
-            optimizer = "optim",
-            lower = as.list(lo),
-            upper = as.list(up),
-            data = list(y = dados),
-            control = list(fnscale = 1, trace = T, maxit = 10000, factr = 1e-10),
-            #use.ginv = TRUE
-            )
+             start = as.list(ii), 
+             method = "L-BFGS-B",
+             optimizer = "optim",
+             lower = as.list(lo),
+             upper = as.list(up),
+             data = list(y = dados),
+             control = list(fnscale = 1, trace = T, maxit = 10000, factr = 1e-10),
+             #use.ginv = TRUE
+)
 summary(fit2)
 coef(fit2)
 vcov(fit2)
 pr <- profile(fit2)
 plot(pr)
+
 ```
