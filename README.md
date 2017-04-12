@@ -78,7 +78,7 @@ ll2 <- function(y, a, b, beta){
 }
 
 
-## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006) (1).pdf)
+## Log-verossimilhança usando a definição de Consul e Famoye no capítulo Lagrangian Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
 ll <- function(y, a, b, beta){
   xbar <- mean(y)
   sbar <- sd(y)
