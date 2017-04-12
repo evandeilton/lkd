@@ -16,15 +16,15 @@ require(lkd)
 require(bbmle)
 require(data.table)
 
-## Dados simulados
-set.seed(2)
-N <- 2000
+## y simulados
+set.seed(4)
+N <- 1000
 x <- 0:(N-1)
 a <- 3; b<- 0.5; beta <- 0.05
-dados <- rLKD(N, a, b, beta)
+y <- rLKD(N, a, b, beta)
 
 par(mfrow = c(2,2))
-hist(dados, nclass = 8, prob=T,main="Amostra",cex.axis=1,cex.lab=1,col="darkgreen")
+hist(y, nclass = 8, prob=T,main="Amostra",cex.axis=1,cex.lab=1,col="darkgreen")
 curve(dLKD(x, a, b, beta), 0, max(y)*2, typ='h', main="Distribuição",cex.axis=1,cex.lab=1,col="darkgreen")
 plot(function(x) pLKD(x, a, b, beta), 0, max(y)*2, main = "Cumulativa")
 xx <- pLKD(0:80, a, b, beta)
@@ -45,7 +45,7 @@ ii <- sapply(grid, mean)
 i <- 1
 while(i <= 10){
   ini <- c(a = as.numeric(grid[i, 1]), b=as.numeric(grid[i, 2]), beta = as.numeric(grid[i, 3]))
-  fit <- try(fitdist(dados, "LKD", method = "mle", start = ini, lower = lo, upper = up, discrete = TRUE))
+  fit <- try(fitdist(y, "LKD", method = "mle", start = ini, lower = lo, upper = up, discrete = TRUE))
   if(class(fit)[1] != "try-error"){
     return(fit) 
     break      
@@ -68,14 +68,16 @@ ll2 <- function(y, a, b, beta){
   l <- NA
   
   if(a > 0 & b > -1 & beta > -b & beta < 1) {
-    l <- dLKD(x = y, a, b, beta, log=TRUE)  
-    #j <- !is.finite(l)
-    #l[j] <- log(.Machine$double.xmin * (1.15e-16))
+    l <- dLKD(y, a, b, beta, log=TRUE)  
+    j <- !is.finite(l)
+    l[j] <- log(.Machine$double.xmin * (1.15e-16))
     l <- -sum(l, na.rm = T)
   }
   return(l)
 }
 
+ll(par = c(a, b, beta), y)
+ll2(y, a, b, beta)
 
 ## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
 
@@ -85,8 +87,9 @@ ll <- function(par, y){
   a <- par[1];b<-par[2]; beta <- par[3]
   xbar <- mean(y)
   sbar <- sd(y)
+
+  n0 <- sum(y == 0)
   n  <- length(y)
-  n0 <- sum(y == y[1])
   
   ni <- table(y)
   s1 <- sapply(2:length(ni), function(i) {
@@ -115,6 +118,8 @@ ll <- function(par, y){
   return(-sum(l, na.rm = T))
 }
 
+ll(par = c(a, b, beta), y)
+ll2(y, a, b, beta)
 
 ## Ajuste por bbmle. Note que fnscale = 1, pois a função de verossimilhança já vem negativa.
 parnames(ll) <- c("a", "b", "beta")
@@ -125,18 +130,18 @@ fit2 <- mle2(ll,
              start = as.list(ii), 
              lower = as.list(lo),
              upper = as.list(up),
-             data = list(y = dados),
-             control = list(fnscale = 1, trace = T, maxit = 10000, factr = 1e-10),
+             data = list(y = y),
+             control = list(fnscale = 1, trace = T, maxit = 100000, factr = 1e-10),
              use.ginv = TRUE
 )
 summary(fit2)
 coef(fit2)
 vcov(fit2)
 pr <- profile(fit2)
+par(mfrow = c(1,1))
 plot(pr)
 
-
-## Ajuste com optim
+## Ajuste com opim
 fit3 <- optim(par = ii, fn = ll,
              method = "L-BFGS-B",
              lower = lo,
@@ -157,7 +162,9 @@ aic <- -2*(-fit3$value) + 2*3
 round(wald,4)
 round(cbind(summary(fit2)@coef, confint(fit2, method = "quad")), 4)
 
-y <- dados
+## Análise da verossimilhança
+
+y <- y
 LL <- Vectorize(
   FUN=function(va, vb, vbeta, y){
     ll(c(va, vb, vbeta), y=y)
@@ -200,4 +207,5 @@ par(mfrow = c(1,3))
 fnPlot(lla, va, vb, pars[1], pars[2], ci[1], ci[2], 2, logL)
 fnPlot(lla, va, vbeta, pars[1], pars[3], ci[1], ci[3], 2, logL)
 fnPlot(lla, vb, vbeta, pars[2], pars[3], ci[2], ci[3], 2, logL)
+
 ```
