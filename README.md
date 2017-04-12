@@ -1,0 +1,1 @@
+# Distribuição Katz Lagrangiana.
