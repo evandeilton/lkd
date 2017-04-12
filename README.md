@@ -136,6 +136,27 @@ pr <- profile(fit2)
 plot(pr)
 
 
+## Ajuste com optim
+fit3 <- optim(par = ii, fn = ll,
+             method = "L-BFGS-B",
+             lower = lo,
+             upper = up,
+             y = y,
+             hessian = TRUE,
+             control = list(fnscale = 1, trace = T, maxit = 100000, factr = 1e-10, temp = 2000, REPORT = 500)
+)
+
+mle = fit3$par
+obf = fit3$hess #Matriz de informação observada de Fisher
+obfi = solve(obf) #Inversa da matrix de FIsher
+erpad=sqrt(diag(obfi))
+#MLE, estmativas e IC Wald a 95%
+wald = cbind(mle, std.erro=erpad, li = mle-qnorm(0.975)*erpad, ls=mle+qnorm(0.975)*erpad)
+aic <- -2*(-fit3$value) + 2*3
+
+round(wald,4)
+round(cbind(summary(fit2)@coef, confint(fit2, method = "quad")), 4)
+
 y <- dados
 LL <- Vectorize(
   FUN=function(va, vb, vbeta, y){
