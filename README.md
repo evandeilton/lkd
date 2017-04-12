@@ -8,7 +8,6 @@ devtools::install_github('evandeilton/lkd')
 ```
 ## Testes
 ```{R}
-
 ################## Análises por MLE ######################
 
 ## Pacotes
@@ -78,8 +77,12 @@ ll2 <- function(y, a, b, beta){
 }
 
 
-## Log-verossimilhança usando a definição de Consul e Famoye no capítulo Lagrangian Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
-ll <- function(y, a, b, beta){
+## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
+
+
+ll <- function(par, y){
+  #a, b, beta
+  a <- par[1];b<-par[2]; beta <- par[3]
   xbar <- mean(y)
   sbar <- sd(y)
   n  <- length(y)
@@ -107,21 +110,24 @@ ll <- function(y, a, b, beta){
   
   #cat("Soma:", -su, "\n")
   
-  l <- -sum((n-n0)*log(a) + (n/beta)*(a + b*xbar)*log(1-beta) - s1 + s2, na.rm = T)
+  l <- (n-n0)*log(a) + (n/beta)*(a + b*xbar)*log(1-beta) - s1 + s2
   
-  return(l)
+  return(-sum(l, na.rm = T))
 }
 
+
 ## Ajuste por bbmle. Note que fnscale = 1, pois a função de verossimilhança já vem negativa.
+parnames(ll) <- c("a", "b", "beta")
 fit2 <- mle2(ll,
-             start = as.list(ii), 
+             vecpar = TRUE,
              method = "L-BFGS-B",
-             optimizer = "optim",
+             optimizer = "optim",             
+             start = as.list(ii), 
              lower = as.list(lo),
              upper = as.list(up),
              data = list(y = dados),
              control = list(fnscale = 1, trace = T, maxit = 10000, factr = 1e-10),
-             #use.ginv = TRUE
+             use.ginv = TRUE
 )
 summary(fit2)
 coef(fit2)
@@ -129,7 +135,6 @@ vcov(fit2)
 pr <- profile(fit2)
 plot(pr)
 
-## Análise da função de log-verossimilhança
 
 y <- dados
 LL <- Vectorize(
@@ -147,8 +152,7 @@ pars <- coef(fit2)
 ci <- confint(fit2, method="quad")
 logL <- as.numeric(logLik(fit2))
 
-## Meio lento este produto interno!!!
-va <- seq(min(grid$a), 3, l=100)
+va <- seq(min(grid$a), 5, l=100)
 vb <- seq(min(grid$b), 2, l=100)
 vbeta <- seq(-1, max(grid$beta), l=100)
 
@@ -175,5 +179,4 @@ par(mfrow = c(1,3))
 fnPlot(lla, va, vb, pars[1], pars[2], ci[1], ci[2], 2, logL)
 fnPlot(lla, va, vbeta, pars[1], pars[3], ci[1], ci[3], 2, logL)
 fnPlot(lla, vb, vbeta, pars[2], pars[3], ci[2], ci[3], 2, logL)
-
 ```
