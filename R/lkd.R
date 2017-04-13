@@ -174,3 +174,51 @@ qLKD <- function(p, a = 5, b = 0.02, beta = 0.3, ...){
   rand <- as.integer(invFx(p))
   return(rand)
 }
+
+
+## Formas da LKD
+## 1. Katz(a, beta)
+## se b = 0
+
+## 2. Binomial(n, theta)
+## se 0 < beta = theta < 1; a = n*theta e b = -theta
+## ou se b = 0; beta < 0; theta = beta(beta-1)^(-1)
+
+## 3. Poisson(a)
+## se b = 0; beta --> 0 (beta tende a 0)
+
+## 3. Poisson Generalizada(a, lambda), capítulo 9
+## se b = 0; beta --> 0 (beta tende a 0)
+
+## 5. Binomial Negativa BN(k, theta)
+## se b = 0; 0 < beta = theta < 1; a/beta = k
+## ou se b = theta(1-theta)^(-1); a = k*theta*(1-theta)^(-1)
+
+## 6. Binomial Negativa Generalizada GNBD, capítulo 10
+## se 0 < beta = theta < 1; a = n*theta e b = (m-1)*theta
+## ou se beta < 0; beta = -theta(1-theta)^(-1); a = n*theta*(1-theta)^(-1) e b = m*theta*(1-theta)^(-1)
+
+is.lkd <- function(n, a, b, beta, c = NULL){
+	if((a > 0) & (b > -1) & (beta > -b & beta < 1)) TRUE else FALSE
+}
+
+is.kats <- function(n, a, b, beta, c = NULL){
+	if(is.lkd(n, a, b, beta, c) & (b == 0)) TRUE else FALSE
+}
+
+is.bn <-  function(n, a, b, beta, c = NULL){
+	if(is.lkd(a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta) & (b == -beta)) TRUE else FALSE
+}
+
+is.po <-  function(n, a, b, beta, c = NULL){
+	if(is.lkd(a, b, beta, c) & (b = 0) & (round(beta, 5) == 0)) TRUE else FALSE
+}
+
+is.nbn <-  function(n, a, b, beta, c = NULL){
+	if(is.lkd(a, b, beta, c) & (b = 0) & (beta > 0 & beta < 1)) TRUE else FALSE
+}
+
+is.gnbn <-  function(n, a, b, beta, c = NULL){
+	if(is.lkd(a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta)) TRUE else FALSE
+}
+
