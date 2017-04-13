@@ -30,6 +30,34 @@ plot(function(x) pLKD(x, a, b, beta), 0, max(y)*2, main = "Cumulativa")
 xx <- pLKD(0:80, a, b, beta)
 plot(function(x) qLKD(x, a, b, beta), min(xx), max(xx), main = "Inversa Cumulativa")
 
+## Estudo interativo
+# Painel para a dLKD
+lkd.panel <- function(panel, type="h"){
+  par(mfrow=c(1,1))
+  a <- panel$a
+  b <- panel$b
+  beta <- panel$beta
+  
+  curve(dLKD(x, a=a, b=b, beta=beta, log=FALSE),
+        from=panel$interval[1], to=panel$interval[2],
+        type=type, #tipo histograma ou linha "l"
+        col="blue", lwd=2, ylab="y=f(x)", xlab="x >= 0")
+  
+  #arrows(mu-sigma, 0, mu+sigma, 0, code=3, length=0.005, angle=90)
+  leg = paste("a =", round(a, 2), "; b =", round(b,2), "; beta =", round(beta,2))
+  legend("top", leg, adj = c(0, .6), pch=5, col="blue", bg = "gray90")
+  panel
+}
+
+x11()
+
+panel <- rp.control(interval=c(0, 30))
+
+rp.slider(panel, a, 0.01, 30, initval = 1, showvalue=TRUE, action=lkd.panel, labels = "a")
+rp.slider(panel, b, -2, 10, initval = 0.5, showvalue=TRUE, action=lkd.panel, labels = "b")
+rp.slider(panel, beta, -1.9, 0.99, initval = 0.05, showvalue=TRUE, action=lkd.panel, labels = expression(beta))
+
+
 ## Grid para gerar intervalo de busca. A LKD é sensível ao seu espaço paramétrico.
 grid <- as.data.table(expand.grid(a = seq(0.01, 10, l = 20), b = seq(0.002, 10, l = 20), beta = seq(-0.2, 1, l = 20)))
 grid$valida <- ifelse(grid$a > 0 & grid$b > -1 & grid$beta > -grid$b & grid$beta < 1, 1, 0)
