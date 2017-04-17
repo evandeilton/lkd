@@ -110,7 +110,8 @@ ll2 <- function(y, a, b, beta){
 }
 
 
-## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
+## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution
+(Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
 ll <- function(par, y){
   #a, b, beta
   a <- par[1];b<-par[2]; beta <- par[3]
