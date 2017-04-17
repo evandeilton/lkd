@@ -8,7 +8,8 @@ Use o comando abaixo para instalar a versão em testes fo pacote lkd.
 devtools::install_github('evandeilton/lkd')
 ````
 ## Exemplos
-Abaixo segue exemplos estudados da lkd incluindo análise do espaço paramétrico da distribuição lkd(x, a, b, beta) e das estimativas de máxima verossimilhança apoiado pela teroria da lkd em Consul, Femoye e Kotz (Prem C. Consul, Felix Famoye, Samuel Kotz- Lagrangian Probability Distributions-Birkhäuser (2006)) capítulo 12.
+Abaixo segue exemplos estudados da lkd incluindo análise do espaço paramétrico da distribuição lkd(x, a, b, beta) e das estimativas de máxima verossimilhança apoiado pela teroria da lkd em Consul, Femoye e Kotz
+(Prem C. Consul, Felix Famoye, Samuel Kotz- Lagrangian Probability Distributions-Birkhäuser (2006)) capítulo 12.
 
 ````R
 
