@@ -1,13 +1,3 @@
-# Distribuição Katz Lagrangiana.
-
-Versão totalmente draft das funções d, p, q e r para a LKD em R puro.
-
-## Instalação do pacote
-```{R}
-devtools::install_github('evandeilton/lkd')
-```
-## Testes
-```{R}
 ################## Análises por MLE ######################
 
 ## Pacotes
@@ -15,12 +5,13 @@ require(fitdistrplus)
 require(lkd)
 require(bbmle)
 require(data.table)
+require(rpanel)
 
 ## y simulados
 set.seed(4)
-N <- 1000
+N <- 3000
 x <- 0:(N-1)
-a <- 3; b<- 0.5; beta <- 0.05
+a <- 3; b<- 0.5; beta <- 0.5
 y <- rLKD(N, a, b, beta)
 
 par(mfrow = c(2,2))
@@ -49,10 +40,9 @@ lkd.panel <- function(panel, type="h"){
   panel
 }
 
-x11()
+#x11()
 
 panel <- rp.control(interval=c(0, 30))
-
 rp.slider(panel, a, 0.01, 30, initval = 1, showvalue=TRUE, action=lkd.panel, labels = "a")
 rp.slider(panel, b, -2, 10, initval = 0.5, showvalue=TRUE, action=lkd.panel, labels = "b")
 rp.slider(panel, beta, -1.9, 0.99, initval = 0.05, showvalue=TRUE, action=lkd.panel, labels = expression(beta))
@@ -104,18 +94,14 @@ ll2 <- function(y, a, b, beta){
   return(l)
 }
 
-ll(par = c(a, b, beta), y)
-ll2(y, a, b, beta)
 
 ## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
-
-
 ll <- function(par, y){
   #a, b, beta
   a <- par[1];b<-par[2]; beta <- par[3]
   xbar <- mean(y)
   sbar <- sd(y)
-
+  
   n0 <- sum(y == 0)
   n  <- length(y)
   
@@ -171,12 +157,12 @@ plot(pr)
 
 ## Ajuste com opim
 fit3 <- optim(par = ii, fn = ll,
-             method = "L-BFGS-B",
-             lower = lo,
-             upper = up,
-             y = y,
-             hessian = TRUE,
-             control = list(fnscale = 1, trace = T, maxit = 100000, factr = 1e-10, temp = 2000, REPORT = 500)
+              method = "L-BFGS-B",
+              lower = lo,
+              upper = up,
+              y = y,
+              hessian = TRUE,
+              control = list(fnscale = 1, trace = T, maxit = 100000, factr = 1e-10, temp = 2000, REPORT = 500)
 )
 
 mle = fit3$par
@@ -235,5 +221,3 @@ par(mfrow = c(1,3))
 fnPlot(lla, va, vb, pars[1], pars[2], ci[1], ci[2], 2, logL)
 fnPlot(lla, va, vbeta, pars[1], pars[3], ci[1], ci[3], 2, logL)
 fnPlot(lla, vb, vbeta, pars[2], pars[3], ci[2], ci[3], 2, logL)
-
-```
