@@ -1,3 +1,17 @@
+## Distribuição Katz Lagrangiana (LKD)
+Contém códigos ainda preliminares das funções d, p, r e q da LKD com três parâmetros
+
+## Instalação
+Use o comando abaixo para instalar a versão em testes fo pacote lkd.
+
+````R
+devtools::install_github('evandeilton/cvforecast')
+````
+## Exemplos
+Abaixo segue exemplos estudados da lkd incluindo análise do espaço paramétrico da distribuição lkd(x, a, b, beta) e das estimativas de máxima verossimilhança apoiado pela teroria da lkd em Consul, Femoye e Kotz (Prem C. Consul, Felix Famoye, Samuel Kotz- Lagrangian Probability Distributions-Birkhäuser (2006)) capítulo 12.
+
+````R
+
 ################## Análises por MLE ######################
 
 ## Pacotes
@@ -221,3 +235,5 @@ par(mfrow = c(1,3))
 fnPlot(lla, va, vb, pars[1], pars[2], ci[1], ci[2], 2, logL)
 fnPlot(lla, va, vbeta, pars[1], pars[3], ci[1], ci[3], 2, logL)
 fnPlot(lla, vb, vbeta, pars[2], pars[3], ci[2], ci[3], 2, logL)
+
+````
