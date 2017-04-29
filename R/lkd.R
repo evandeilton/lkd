@@ -108,7 +108,7 @@ dLKD <- function(x, a = 5, b = 0.02, beta = 0.3, log = FALSE, ...){
   #if(a <= 0) stop("a deve ser > 0")
   #if(b <= -1) stop("b deve ser > -1")
   #if(p <= -b | p >= 1) stop("p deve ser > -b e menor que 1")
-  if(a > 0 & b > -1 & beta > -b & beta < 1) {
+  if(a > 0 & b > -1 & (beta > -b & beta < 1)) {
     stirling <- function(z){
       sqrt(2*pi*z)*(z/exp(1))^z
     }
@@ -182,7 +182,8 @@ qLKD <- function(p, a = 5, b = 0.02, beta = 0.3, ...){
 
 ## 2. Binomial(n, theta)
 ## se 0 < beta = theta < 1; a = n*theta e b = -theta
-## ou se b = 0; beta < 0; theta = beta(beta-1)^(-1)
+## ou se b = 0; beta < 0; theta = beta*(beta-1)^(-1)
+
 
 ## 3. Poisson(a)
 ## se b = 0; beta --> 0 (beta tende a 0)
@@ -199,7 +200,7 @@ qLKD <- function(p, a = 5, b = 0.02, beta = 0.3, ...){
 ## ou se beta < 0; beta = -theta(1-theta)^(-1); a = n*theta*(1-theta)^(-1) e b = m*theta*(1-theta)^(-1)
 
 is.lkd <- function(n, a, b, beta, c = NULL){
-	if((a > 0) & (b > -1) & (beta > -b & beta < 1)) TRUE else FALSE
+	if((a > 0) & (b > -beta) & (beta < 1)) TRUE else FALSE
 }
 
 is.kats <- function(n, a, b, beta, c = NULL){
@@ -207,18 +208,19 @@ is.kats <- function(n, a, b, beta, c = NULL){
 }
 
 is.bn <-  function(n, a, b, beta, c = NULL){
-	if(is.lkd(a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta) & (b == -beta)) TRUE else FALSE
+  theta <- beta
+  if(beta > 0 & theta < 1 & a == n*theta & b == -theta) TRUE else FALSE
 }
 
 is.po <-  function(n, a, b, beta, c = NULL){
-	if(is.lkd(a, b, beta, c) & (b = 0) & (round(beta, 5) == 0)) TRUE else FALSE
+	if(is.lkd(n, a, b, beta, c) & (b == 0) & (round(beta, 5) == 0)) TRUE else FALSE
 }
 
 is.nbn <-  function(n, a, b, beta, c = NULL){
-	if(is.lkd(a, b, beta, c) & (b = 0) & (beta > 0 & beta < 1)) TRUE else FALSE
+	if(is.lkd(n, a, b, beta, c) & (b == 0) & (beta > 0 & beta < 1)) TRUE else FALSE
 }
 
 is.gnbn <-  function(n, a, b, beta, c = NULL){
-	if(is.lkd(a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta)) TRUE else FALSE
+	if(is.lkd(n, a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta)) TRUE else FALSE
 }
 
