@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Distribuição Katz Lagrangiana.
 
 Versão totalmente draft das funções d, p, q e r para a LKD em R puro.
