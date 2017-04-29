@@ -176,6 +176,61 @@ qLKD <- function(p, a = 5, b = 0.02, beta = 0.3, ...){
 }
 
 
+#' Distribuicao Katz Lagrangiana Generalizada (GLKD)
+#'
+#' Probabilidades acumuladas da GLKD.
+#' @param x quantis de probabilidade da LKD
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param c parametro 3
+#' @param beta parametro 4, tambem de nome beta
+#' @param log se TRUE retorna o log das probabilidades
+#' @param ... passagem de argumentos
+#'
+#' @details Para lidar com fatoriais envolvendo números decimais utilizamos a função Gamma, além disso, visando resolver problemas de números muito grandes nos fatoriais, usamos a aproximação de Stirling.
+#'
+#' @examples dGLKD(x = 0:10, a = 5, b = 0.05, c = 0.5, beta = 0.1)
+## @export
+dGLKD <- function(x, a = 5, b = 0.02, c = 0.5, beta = 0.3, log = FALSE, ...){
+  #if(a <= 0) stop("a deve ser > 0")
+  #if(b <= -1) stop("b deve ser > -1")
+  #if(p <= -b | p >= 1) stop("p deve ser > -b e menor que 1")
+  if(a > 0 & c > 0 & b > -c & (beta > 0 & beta < 1)) {
+    stirling <- function(z){
+      sqrt(2*pi*z)*(z/exp(1))^z
+    }
+
+    o <- sapply(x, function(i){
+      f1 <- a/c + b*i/c
+      g1 <- gamma(f1 + i + 1)
+      if(!is.finite(g1)){
+        g1 <- stirling(f1 + i + 1)
+        if(!is.finite(g1)) g1 <- .Machine$double.xmax
+      }
+
+      g2 <- gamma(i+1)
+      if(!is.finite(g2)){
+        g2 <- stirling(i+1)
+        if(!is.finite(g2)) g2 <- .Machine$double.xmax
+      }
+
+      g3 <- gamma(f1 + 1)
+      if(!is.finite(g3)){
+        g3 <- stirling(f1 + 1)
+        if(!is.finite(g3)) g3 <- .Machine$double.xmax
+      }
+
+      oo <- ((a/c)/(f1 + i))*(g1/(g2*g3))*beta^(i)*(1-beta)^f1
+      return(oo)
+    })
+    if(log) o <- log(o)
+    return(o)
+  } else {
+    cat('indefinida nestes parametros!\n')
+    return(NA)
+  }
+}
+
 ## Formas da LKD
 ## 1. Katz(a, beta)
 ## se b = 0
