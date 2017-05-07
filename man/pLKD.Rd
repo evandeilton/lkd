@@ -28,4 +28,3 @@ todo
 \examples{
 pLKD(q = 50, a = 5, b = 0.05, beta = 0.1)
 }
-

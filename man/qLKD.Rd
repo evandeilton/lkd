@@ -26,4 +26,3 @@ Gerar quantis da LKD utilizando a transformação integral de probabilidade atra
 \examples{
 qLKD(10, a = 5, b = 0.05, beta = 0.1)
 }
-

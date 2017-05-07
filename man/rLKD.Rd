@@ -23,4 +23,3 @@ Geração de números aleatórios da LKD pelo método da inversa da função de 
 \examples{
 rLKD(50, a = 5, b = 0.05, beta = 0.1)
 }
-
