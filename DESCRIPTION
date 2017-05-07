@@ -1,7 +1,7 @@
 Package: lkd
 Type: Package
 Title: Lagrangian Katz Distribution
-Version: 0.1.0
+Version: 0.9.0
 Author: Jose Evandeilton Lopes (LOPES, J. E.)
 Maintainer: <evandeilton@gmail.com>
 Description: This package in pure R works with the lagrangian Katz Distribution and have among others, the functions dLKD, pLKD, qLKD and rLKD of this family of distribution.
