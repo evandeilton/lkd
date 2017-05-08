@@ -254,33 +254,53 @@ dGLKD <- function(x, a = 5, b = 0.02, c = 0.5, beta = 0.3, log = FALSE, ...){
 ## se 0 < beta = theta < 1; a = n*theta e b = (m-1)*theta
 ## ou se beta < 0; beta = -theta(1-theta)^(-1); a = n*theta*(1-theta)^(-1) e b = m*theta*(1-theta)^(-1)
 
+#' Dados os parametros verifica se é lkd
+#'
+#' @export
 is.lkd <- function(n, a, b, beta, c = NULL){
 	if((a > 0) & (b > -beta) & (beta < 1)) TRUE else FALSE
 }
 
+#' Dados os parametros verifica se a lkd é uma katz
+#'
+#' @export
 is.kats <- function(n, a, b, beta, c = NULL){
 	if(is.lkd(n, a, b, beta, c) & (b == 0)) TRUE else FALSE
 }
 
+#' Dados os parametros verifica se a lkd é uma Binomial(N, p = beta)
+#'
+#' @export
 is.bn <-  function(n, a, b, beta, c = NULL){
   theta <- beta
   if(beta > 0 & theta < 1 & a == n*theta & b == -theta) TRUE else FALSE
 }
 
+#' Dados os parametros verifica se a lkd é uma Poisson(theta = a)
+#'
+#' @export
 is.po <-  function(n, a, b, beta, c = NULL){
 	if((b == 0) & (round(beta, 10) == 0)) TRUE else FALSE
 }
 
+#' Dados os parametros verifica se a lkd é uma Binomial Negativa(N, p = beta)
+#'
+#' @export
 is.nbn <-  function(n, a, b, beta, c = NULL){
 	if((b == 0) & (beta > 0 & beta < 1)) TRUE else FALSE
 }
 
+#' Dados os parametros verifica se a lkd é uma Binomial Negativa Generalizada(N, beta, a)
+#'
+#' @export
 is.gnbn <-  function(n, a, b, beta, c = NULL){
 	if(is.lkd(n, a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta)) TRUE else FALSE
 }
 
 
-## Moment estimation
+#' Estimativas de momento da lkd
+#'
+#' @export
 est_mm <- function(y){
   xb <- mean(y)
   S2 <- var(y)
@@ -297,8 +317,9 @@ est_mm <- function(y){
   return(c(m_a = m_a[1], m_b = m_b[1], m_beta = m_beta[1]))
 }
 
-
-## Estimation Based on Moments and Zero-Class Frequency
+#' Estimativas com bese em momemento e zero-class para a lkd
+#'
+#' @export
 est_mzcf <- function(y, a, beta, ...){
   f0 <- (1-beta)^(a/beta)
   #f0 <- sum(y==0)/ length(y)
@@ -321,6 +342,9 @@ est_mzcf <- function(y, a, beta, ...){
   return(c(m_a = a_bar, m_b = b_bar, m_beta = beta_bar))
 }
 
+#' Estimativas de Maxima log-verossimilhança da lkd
+#'
+#' @export
 est_mle <- function(y, a, beta, ...){
   n <- length(y)
   ni <- table(y)
@@ -371,7 +395,9 @@ est_mle <- function(y, a, beta, ...){
 }
 
 
-
+#' Estimativas de Maxima log-verossimilhança da lkd em outra abordagem
+#'
+#' @export
 est_mle_v2 <- function(y){
   n <- length(y)
   ni <- table(y)
@@ -398,7 +424,9 @@ est_mle_v2 <- function(y){
   return(c(a = a, b = b_beta[1], beta = b_beta[2]))
 }
 
-
+#' Função gradiente analítica da lkd(a,b,beta)
+#'
+#' @export
 grad_lkd <- function(pars, ...){
   a <- pars[1];b<-pars[2]; beta <- pars[3]
   xbar <- mean(y)
@@ -434,6 +462,9 @@ grad_lkd <- function(pars, ...){
 }
 grad_lkd <- compiler::cmpfun(grad_lkd)
 
+#' Função Hessiana analítica da lkd(a,b,beta)
+#'
+#' @export
 hessian_lkd <- function(pars, ...){
   a <- pars[1];b<-pars[2]; beta <- pars[3]
   xbar <- mean(y)
@@ -512,7 +543,9 @@ hessian_lkd <- function(pars, ...){
 }
 hessian_lkd <- compiler::cmpfun(hessian_lkd)
 
-
+#' Função de log-verossimilhança altenativa da lkd(a,b,beta)
+#'
+#' @export
 likeli_lkd <- function(pars, y){
   a <- pars[1];b<-pars[2]; beta <- pars[3]
   xbar <- mean(y)
