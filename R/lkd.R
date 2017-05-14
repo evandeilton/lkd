@@ -152,14 +152,12 @@ plkd <- function(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log =
 #' @return vetor de observações de uma lkd(a, b, beta)
 #'
 #' @examples
-#' # rlkd(10, 2, -0.2, 0.2)
-#' # rlkd(10, 2, -0.2, 0.3)
-#' # rlkd(100, 2, 0, 0.2)
-#' # rlkd(100, 2, 0.7, 6)
-#' # x <- rlkd(500, 2, 0.2, 0.3)
-#' # hist(x, main = 'Amostras da lkd(2, 0.2, 0.3)')
+#' rlkd(10, 2, -0.2, 0.2)
+#' rlkd(10, 2, -0.2, 0.3)
+#' rlkd(100, 2, 0, 0.2)
+#' x <- rlkd(500, 2, 0.2, 0.3)
+#' hist(x, main = 'Amostras da lkd(2, 0.2, 0.3)')
 #' @export
-#'
 rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = FALSE, ...){
   if(a < 0) stop("a deve ser > 0")
   if(beta > 1) stop("beta deve ser < 1")
