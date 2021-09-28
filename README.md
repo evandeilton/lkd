@@ -12,7 +12,6 @@ Abaixo segue exemplos estudados da lkd incluindo análise do espaço paramétric
 (Prem C. Consul, Felix Famoye, Samuel Kotz- Lagrangian Probability Distributions-Birkhäuser (2006)) capítulo 12.
 
 ````R
-
 ################## Análises por MLE ######################
 
 ## Pacotes
@@ -27,24 +26,24 @@ set.seed(4)
 N <- 3000
 x <- 0:(N-1)
 a <- 3; b<- 0.5; beta <- 0.5
-y <- rLKD(N, a, b, beta)
+y <- unlist(rlkd(N, a, b, beta))
 
 par(mfrow = c(2,2))
 hist(y, nclass = 8, prob=T,main="Amostra",cex.axis=1,cex.lab=1,col="darkgreen")
-curve(dLKD(x, a, b, beta), 0, max(y)*2, typ='h', main="Distribuição",cex.axis=1,cex.lab=1,col="darkgreen")
-plot(function(x) pLKD(x, a, b, beta), 0, max(y)*2, main = "Cumulativa")
-xx <- pLKD(0:80, a, b, beta)
-plot(function(x) qLKD(x, a, b, beta), min(xx), max(xx), main = "Inversa Cumulativa")
+curve(dlkd(x, a, b, beta), 0, max(y)*2, typ='h', main="Distribuição",cex.axis=1,cex.lab=1,col="darkgreen")
+plot(function(x) plkd(x, a, b, beta), 0, max(y)*2, main = "Cumulativa")
+xx <- plkd(0:80, a, b, beta)
+plot(function(x) qlkd(x, a, b, beta), min(xx), max(xx), main = "Inversa Cumulativa")
 
 ## Estudo interativo
-# Painel para a dLKD
+# Painel para a dlkd
 lkd.panel <- function(panel, type="h"){
   par(mfrow=c(1,1))
   a <- panel$a
   b <- panel$b
   beta <- panel$beta
   
-  curve(dLKD(x, a=a, b=b, beta=beta, log=FALSE),
+  curve(dlkd(x, a=a, b=b, beta=beta, log=FALSE),
         from=panel$interval[1], to=panel$interval[2],
         type=type, #tipo histograma ou linha "l"
         col="blue", lwd=2, ylab="y=f(x)", xlab="x >= 0")
@@ -101,7 +100,7 @@ ll2 <- function(y, a, b, beta){
   l <- NA
   
   if(a > 0 & b > -1 & beta > -b & beta < 1) {
-    l <- dLKD(y, a, b, beta, log=TRUE)  
+    l <- dlkd(y, a, b, beta, log=TRUE)  
     j <- !is.finite(l)
     l[j] <- log(.Machine$double.xmin * (1.15e-16))
     l <- -sum(l, na.rm = T)
@@ -110,8 +109,7 @@ ll2 <- function(y, a, b, beta){
 }
 
 
-## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution
-(Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
+## Log-verossimilhança usando a definição de Consul e Famoye em no capítulo Lagrangia Katz Distribution (Prem C. Consul, Felix Famoye, Samuel Kotz-Lagrangian Probability Distributions-Birkhäuser (2006))
 ll <- function(par, y){
   #a, b, beta
   a <- par[1];b<-par[2]; beta <- par[3]
@@ -237,6 +235,5 @@ par(mfrow = c(1,3))
 fnPlot(lla, va, vb, pars[1], pars[2], ci[1], ci[2], 2, logL)
 fnPlot(lla, va, vbeta, pars[1], pars[3], ci[1], ci[3], 2, logL)
 fnPlot(lla, vb, vbeta, pars[2], pars[3], ci[2], ci[3], 2, logL)
-
 ````
 >>>>>>> 6ee79794549348d2c29d9f234691130db8165088
