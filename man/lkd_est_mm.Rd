@@ -6,6 +6,9 @@
 \usage{
 lkd_est_mm(y)
 }
+\arguments{
+\item{y}{vetor de amostras de uma lkd}
+}
 \description{
 Estimativas de momento da lkd
 }

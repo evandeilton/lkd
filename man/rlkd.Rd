@@ -4,8 +4,7 @@
 \alias{rlkd}
 \title{Distribuicao Katz Lagrangiana (LKD)}
 \usage{
-rlkd(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE,
-  acum = FALSE, ...)
+rlkd(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = FALSE)
 }
 \arguments{
 \item{n}{número de observacções desejadas da lkd(a, b, beta)}
@@ -21,8 +20,6 @@ rlkd(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE,
 \item{log}{se TRUE retorna o log das probabilidades}
 
 \item{acum}{se TRUE retorna a probabilidade acumulada no quatil X, senão retorna X como uma realização da lkd(a, b, beta)}
-
-\item{...}{passagem de argumentos}
 }
 \value{
 vetor de observações de uma lkd(a, b, beta)

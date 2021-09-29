@@ -23,7 +23,6 @@ NULL
 #' @param size utlizado quando a lkd deriva Binomial ou Binomial Negativa
 #' @param f_bino se TRUE retorna dlkd na forma fatorial, se FALSE retorna a forma função gamma.
 #' @param log se TRUE retorna o log das probabilidades
-#' @param ... passagem de argumentos
 #'
 #' @details Para lidar com fatoriais envolvendo números decimais utilizamos a função Gamma. Além disso, todas as contas são feitas em log e ao final retornam em exponencial.
 #'
@@ -38,7 +37,7 @@ NULL
 #' plot(function(x) dlkd(x, 20, 0.5, 0.9), 0, 50, main = "LKD", type = "h")
 #'
 #' @export
-dlkd <- function(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log = FALSE, ...){
+dlkd <- function(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log = FALSE){
   if(a < 0) stop("a deve ser > 0")
   if(beta > 1) stop("beta deve ser < 1")
   if(b < -beta) stop("b > que -beta")
@@ -89,7 +88,6 @@ dlkd <- function(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log =
 #' @param size utlizado quando a lkd deriva Binomial ou Binomial Negativa
 #' @param log se TRUE retorna o log das probabilidades
 #' @param f_bino se TRUE retorna dlkd na forma fatorial, se FALSE retorna a forma função gamma.
-#' @param ... passagem de argumentos
 #' @details todo
 #'
 #' @return vetor de probabilidades acumuladas para cada quartil da lkd(a, b, beta)
@@ -103,7 +101,7 @@ dlkd <- function(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log =
 #' plot(function(x) plkd(x, 20, 0.5, 0.9), 0, 50, main = "LKD", type = "h")
 #'
 #' @export
-plkd <- function(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log = FALSE, ...){
+plkd <- function(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log = FALSE){
   if(a < 0) stop("a deve ser > 0")
   if(beta > 1) stop("beta deve ser < 1")
   if(b < -beta) stop("b > que -beta")
@@ -145,7 +143,6 @@ plkd <- function(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log =
 #' @param size utlizado quando a lkd deriva Binomial ou Binomial Negativa
 #' @param log se TRUE retorna o log das probabilidades
 #' @param acum se TRUE retorna a probabilidade acumulada no quatil X, senão retorna X como uma realização da lkd(a, b, beta)
-#' @param ... passagem de argumentos
 #'
 #' @details Esta função utiliza uma função interna que determina amostras da lkd(a, b, beta) pelo método da inversa da função de probabilidade acumulada.
 #'
@@ -158,7 +155,7 @@ plkd <- function(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log =
 #' x <- rlkd(500, 2, 0.2, 0.3)
 #' hist(x, main = 'Amostras da lkd(2, 0.2, 0.3)')
 #' @export
-rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = FALSE, ...){
+rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = FALSE){
   if(a < 0) stop("a deve ser > 0")
   if(beta > 1) stop("beta deve ser < 1")
   if(b < -beta) stop("b > que -beta")
@@ -192,7 +189,7 @@ rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = F
   return(unlist(S))
 }
 
-## @export
+## Função auxiliar para rlkd
 .xlkd <- function(u, a, b, beta, acum = FALSE){
   if(a < 0) stop("a deve ser > 0")
   if(beta > 1) stop("beta deve ser < 1")
@@ -241,7 +238,6 @@ rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = F
 #' @param a parametro 1
 #' @param b parametro 2
 #' @param beta parametro 3, tambem de nome beta
-#' @param ... passagem de argumentos
 #'
 #' @details Gerar quantis da LKD utilizando a transformação integral de probabilidade através de aproximação numérica.
 #'
@@ -257,7 +253,7 @@ rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = F
 #' par(mfrow = c(1,1))
 #'
 #' @export
-qlkd <- function(p, a = 5, b = 0.02, beta = 0.3, log = FALSE, ...){
+qlkd <- function(p, a = 5, b = 0.02, beta = 0.3, log = FALSE){
   if(a < 0) stop("a deve ser > 0")
   if(beta > 1) stop("beta deve ser < 1")
   if(b < -beta) stop("b > que -beta")
@@ -301,7 +297,6 @@ qlkd <- function(p, a = 5, b = 0.02, beta = 0.3, log = FALSE, ...){
 ## se 0 < beta = theta < 1; a = n*theta e b = -theta
 ## ou se b = 0; beta < 0; theta = beta*(beta-1)^(-1)
 
-
 ## 3. Poisson(a)
 ## se b = 0; beta --> 0 (beta tende a 0)
 
@@ -317,21 +312,33 @@ qlkd <- function(p, a = 5, b = 0.02, beta = 0.3, log = FALSE, ...){
 ## ou se beta < 0; beta = -theta(1-theta)^(-1); a = n*theta*(1-theta)^(-1) e b = m*theta*(1-theta)^(-1)
 
 #' Dados os parametros verifica se é lkd
-#'
+#' @param n número de observacções desejadas da lkd(a, b, beta)
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param beta parametro 3
+#' @param c parametro 3
 #' @export
 is.lkd <- function(n, a, b, beta, c = NULL){
 	if((a > 0) & (b > -beta) & (beta < 1)) TRUE else FALSE
 }
 
 #' Dados os parametros verifica se a lkd é uma katz
-#'
+#' @param n número de observacções desejadas da lkd(a, b, beta)
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param beta parametro 3
+#' @param c parametro 4
 #' @export
 is.kats <- function(n, a, b, beta, c = NULL){
 	if(is.lkd(n, a, b, beta, c) & (b == 0)) TRUE else FALSE
 }
 
 #' Dados os parametros verifica se a lkd é uma Binomial(N, p = beta)
-#'
+#' @param n número de observacções desejadas da lkd(a, b, beta)
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param beta parametro 3
+#' @param c parametro 4
 #' @export
 is.bn <-  function(n, a, b, beta, c = NULL){
   theta <- beta
@@ -339,21 +346,33 @@ is.bn <-  function(n, a, b, beta, c = NULL){
 }
 
 #' Dados os parametros verifica se a lkd é uma Poisson(theta = a)
-#'
+#' @param n número de observacções desejadas da lkd(a, b, beta)
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param beta parametro 3
+#' @param c parametro 4
 #' @export
 is.po <-  function(n, a, b, beta, c = NULL){
 	if((b == 0) & (round(beta, 10) == 0)) TRUE else FALSE
 }
 
 #' Dados os parametros verifica se a lkd é uma Binomial Negativa(N, p = beta)
-#'
+#' @param n número de observacções desejadas da lkd(a, b, beta)
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param beta parametro 3
+#' @param c parametro 4
 #' @export
 is.nbn <-  function(n, a, b, beta, c = NULL){
 	if((b == 0) & (beta > 0 & beta < 1)) TRUE else FALSE
 }
 
 #' Dados os parametros verifica se a lkd é uma Binomial Negativa Generalizada(N, beta, a)
-#'
+#' @param n número de observacções desejadas da lkd(a, b, beta)
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param beta parametro 3
+#' @param c parametro 4
 #' @export
 is.gnbn <-  function(n, a, b, beta, c = NULL){
 	if(is.lkd(n, a, b, beta, c) & (beta > 0 & beta < 1) & (a == n*beta)) TRUE else FALSE
@@ -361,7 +380,7 @@ is.gnbn <-  function(n, a, b, beta, c = NULL){
 
 
 #' Estimativas de momento da lkd
-#'
+#' @param y vetor de amostras de uma lkd
 #' @export
 lkd_est_mm <- function(y){
   xb <- mean(y)
@@ -379,9 +398,12 @@ lkd_est_mm <- function(y){
   return(c(m_a = m_a[1], m_b = m_b[1], m_beta = m_beta[1]))
 }
 
-#' Estimativas com bese em momemento e zero-class para a lkd
+#' Estimativas com base em momento e zero-class para a lkd
+#' @param y vetor de amostras de uma lkd
+#' @param a parametro 1
+#' @param b parametro 2
 #' @export
-lkd_est_mzcf <- function(y, a, beta, ...){
+lkd_est_mzcf <- function(y, a, beta){
   f0 <- (1-beta)^(a/beta)
   #f0 <- sum(y==0)/ length(y)
   lf0 <- log(f0)
@@ -404,7 +426,10 @@ lkd_est_mzcf <- function(y, a, beta, ...){
 }
 
 #' Estimativas de Maxima log-verossimilhança da lkd
-#'
+#' @param y vetor de amostras de uma lkd
+#' @param a parametro 1
+#' @param b parametro 2
+#' @param ... passagem de argumentos
 #' @export
 lkd_est_mle <- function(y, a, beta, ...){
   n <- length(y)

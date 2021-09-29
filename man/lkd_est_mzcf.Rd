@@ -2,10 +2,17 @@
 % Please edit documentation in R/lkd.R
 \name{lkd_est_mzcf}
 \alias{lkd_est_mzcf}
-\title{Estimativas com bese em momemento e zero-class para a lkd}
+\title{Estimativas com base em momento e zero-class para a lkd}
 \usage{
-lkd_est_mzcf(y, a, beta, ...)
+lkd_est_mzcf(y, a, beta)
+}
+\arguments{
+\item{y}{vetor de amostras de uma lkd}
+
+\item{a}{parametro 1}
+
+\item{b}{parametro 2}
 }
 \description{
-Estimativas com bese em momemento e zero-class para a lkd
+Estimativas com base em momento e zero-class para a lkd
 }

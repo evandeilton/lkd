@@ -6,6 +6,15 @@
 \usage{
 lkd_est_mle(y, a, beta, ...)
 }
+\arguments{
+\item{y}{vetor de amostras de uma lkd}
+
+\item{a}{parametro 1}
+
+\item{...}{passagem de argumentos}
+
+\item{b}{parametro 2}
+}
 \description{
 Estimativas de Maxima log-verossimilhança da lkd
 }

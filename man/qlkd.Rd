@@ -4,7 +4,7 @@
 \alias{qlkd}
 \title{Distribuicao Katz Lagrangiana (LKD)}
 \usage{
-qlkd(p, a = 5, b = 0.02, beta = 0.3, log = FALSE, ...)
+qlkd(p, a = 5, b = 0.02, beta = 0.3, log = FALSE)
 }
 \arguments{
 \item{p}{vetor de probabilidade da LKD}
@@ -14,8 +14,6 @@ qlkd(p, a = 5, b = 0.02, beta = 0.3, log = FALSE, ...)
 \item{b}{parametro 2}
 
 \item{beta}{parametro 3, tambem de nome beta}
-
-\item{...}{passagem de argumentos}
 }
 \description{
 Inversa das probabilidades acumuladas da lkd(a, b, beta) obtida por simulação via método da transformação integral da probabilidade.

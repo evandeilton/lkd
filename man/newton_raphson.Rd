@@ -4,8 +4,16 @@
 \alias{newton_raphson}
 \title{Algoritmo Newton-Rapson matricial}
 \usage{
-newton_raphson(initial, escore, hessiano, tol = 1e-04, max.iter = 500,
-  n.dim = 3, trace = TRUE, ...)
+newton_raphson(
+  initial,
+  escore,
+  hessiano,
+  tol = 1e-04,
+  max.iter = 500,
+  n.dim = 3,
+  trace = TRUE,
+  ...
+)
 }
 \arguments{
 \item{initial}{valores do chute inicial}

@@ -4,8 +4,7 @@
 \alias{dlkd}
 \title{Distribuicao Katz Lagrangiana (LKD)}
 \usage{
-dlkd(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE,
-  log = FALSE, ...)
+dlkd(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log = FALSE)
 }
 \arguments{
 \item{x}{um vetor de observações de uma lkd(a, b, beta)}
@@ -21,8 +20,6 @@ dlkd(x, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE,
 \item{f_bino}{se TRUE retorna dlkd na forma fatorial, se FALSE retorna a forma função gamma.}
 
 \item{log}{se TRUE retorna o log das probabilidades}
-
-\item{...}{passagem de argumentos}
 }
 \value{
 vetor de probabilidades da lkd(a, b, beta)

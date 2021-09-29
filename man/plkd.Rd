@@ -4,8 +4,7 @@
 \alias{plkd}
 \title{Distribuicao Katz Lagrangiana (LKD)}
 \usage{
-plkd(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE,
-  log = FALSE, ...)
+plkd(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE, log = FALSE)
 }
 \arguments{
 \item{q}{vetor de quantis de probabilidade da LKD}
@@ -21,8 +20,6 @@ plkd(q, a = 5, b = 0.02, beta = 0.3, size = 1, f_bino = FALSE,
 \item{f_bino}{se TRUE retorna dlkd na forma fatorial, se FALSE retorna a forma função gamma.}
 
 \item{log}{se TRUE retorna o log das probabilidades}
-
-\item{...}{passagem de argumentos}
 }
 \value{
 vetor de probabilidades acumuladas para cada quartil da lkd(a, b, beta)
