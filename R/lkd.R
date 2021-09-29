@@ -180,10 +180,9 @@ rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = F
     S <- rnbinom(n, size, beta)
   } else {
     ve <- sort(runif(n, min = 0, max = 1))
-    oo <- c()
+    oo <- vector(mode = "numeric", length = length(ve))
     for(i in seq_along(ve)){
-      o <- .xlkd(u = ve[i], a = a, b = b, beta = beta)
-      oo[[i]] <- o
+      oo[[i]] <- .xlkd(u = ve[i], a = a, b = b, beta = beta)
     }
     S <- sample(oo, replace = FALSE)
   }
