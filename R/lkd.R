@@ -190,7 +190,7 @@ rlkd <- function(n, a = 5, b = 0.02, beta = 0.3, size = 1, log = FALSE, acum = F
   if(log) {
     S <- log(S)
   }
-  return(S)
+  return(unlist(S))
 }
 
 ## @export
